@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Lights On</string>
+    <string name="all_lights_on">Alle Lichter anschalten</string>
+    <string name="all_lights_off">Alle Lichter ausschalten</string>
+    <string name="all_lights_on_do">Alle Lichter werden angeschaltet ...</string>
+    <string name="all_lights_off_do">Alle Lichter werden ausgeschaltet ...</string>
+    <string name="error_message">Leider ist ein Fehler aufgetreten.</string>
+</resources>
