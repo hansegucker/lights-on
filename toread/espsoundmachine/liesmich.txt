@@ -1,0 +1,7 @@
+Quatschkasten
+Eine portable Soundmachine auf Basis des Espressif ESP32
+aus c't 22/17
+===========
+espsoundmachine.ino - Beispielquellcode zum Artikel
+Case.scad - Gehäusevorlage für 3D-Drucker.
+espsoundmachine.fzz – Fritzing-Vorlage für den Artikel
