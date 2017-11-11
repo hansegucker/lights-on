@@ -5,4 +5,5 @@
     <string name="all_lights_on_do">Alle Lichter werden angeschaltet ...</string>
     <string name="all_lights_off_do">Alle Lichter werden ausgeschaltet ...</string>
     <string name="error_message">Leider ist ein Fehler aufgetreten.</string>
+    <string name="color_change">Die Farbe wird gewechselt ...</string>
 </resources>

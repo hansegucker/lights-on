@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         // Buttons
         final Button AllLightsOn = (Button) findViewById(R.id.all_lights_on);
         final Button AllLightsOff = (Button) findViewById(R.id.all_lights_off);
+        final ColorPickerView ColorPicker = (ColorPickerView) findViewById(R.id.color_picker);
 
         AllLightsOn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +48,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 say(getResources().getString(R.string.all_lights_off_do));
+
+                allOff();
+            }
+        });
+
+        ColorPicker.addOnColorSelectedListener(new OnColorSelectedListener() {
+            @Override
+            public void onColorSelected(int selectedColor) {
+                say(Integer.toHexString(selectedColor));
+                say(getResources().getString(R.string.color_change));
             }
         });
     }
@@ -53,10 +67,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(String result) {
                 say(result);
-                say("GOT");
             }
         }
-        new AllOnTask().execute("http://192.168.4.1/");
+        new AllOnTask().execute("http://192.168.4.1/all/on/");
+    }
+
+    protected void allOff() {
+        class AllOnTask extends GetUrlContentTask {
+            @Override
+            protected void onPostExecute(String result) {
+                say(result);
+            }
+        }
+        new AllOnTask().execute("http://192.168.4.1/all/off/");
     }
 
     protected void say(CharSequence msg) {

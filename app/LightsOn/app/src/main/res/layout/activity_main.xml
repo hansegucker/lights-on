@@ -27,5 +27,18 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/all_lights_on"
             android:text="@string/all_lights_off" />
+
+        <com.flask.colorpicker.ColorPickerView
+            android:id="@+id/color_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:alphaSlider="true"
+            app:density="12"
+            app:lightnessSlider="true"
+            app:wheelType="FLOWER"
+            app:lightnessSliderView="@+id/v_lightness_slider"
+            app:alphaSliderView="@+id/v_alpha_slider"
+            android:layout_alignParentBottom="true" />
+
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

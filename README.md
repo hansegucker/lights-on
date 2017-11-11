@@ -26,4 +26,6 @@ The board is selected via the `Tools` menu.
 #### Connect the LoLin NodeMCU Module to your PC
 If this is your first time connecting your development board, you may simply need to connect the ESP8266-12E module to your computer via a micro USB cable.
 
+## Images
+led-green-black.svg: https://openclipart.org/detail/88117/led-green
 
