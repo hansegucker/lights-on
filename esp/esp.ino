@@ -3,9 +3,14 @@
 //////////////////////
 // WiFi Definitions //
 //////////////////////
-const char WiFiAPPSK[] = "lights-on";
-
+const char* wifi_name = "lights-on";
+const char* wifi_pass = "lights-on";
 WiFiServer server(80);
+
+////////////////////////
+// Server Definitions //
+////////////////////////
+
 
 void setup() 
 {
@@ -16,6 +21,10 @@ void setup()
 
 void loop() 
 {
+  // Set header
+  String header = "HTTP/1.1 200 OK\r\n";
+  header += "Content-Type: text/html\r\n\r\n";
+  
   // Check if a client has connected
   WiFiClient client = server.available();
   if (!client) {
@@ -24,54 +33,40 @@ void loop()
 
   // Read the first line of the request
   String req = client.readStringUntil('\r');
+  logStatus("Got following request:");
   logStatus(req);
   client.flush();
 
-  // Match the request
-  if (req.indexOf("/all/on") != -1)
-    allOn();
-  else if (req.indexOf("/all/off") != -1)
-    allOff();
-  
-  client.flush();
-
   // Prepare the response. Start with the common header:
-  String s = "HTTP/1.1 200 OK\r\n";
-  s += "Content-Type: text/html\r\n\r\n";
-  s += "<!DOCTYPE HTML>\r\n<html>\r\n";
-  s += "It works";
-  s += "</html>\n";
+  String s = header;
+
+  // Match the request
+  if (req.indexOf("/all/on") != -1) {
+    allOn();
+    s += "1";
+  } else if (req.indexOf("/all/off") != -1) {
+    allOff();
+    s += "1";
+  } else {
+    s += "1";
+  }
+  
+  client.flush();  
 
   // Send the response to the client
   client.print(s);
   delay(1);
-  logStatus("Client disonnected");
 
-  // The client will actually be disconnected 
-  // when the function returns and 'client' object is detroyed
+  // Disconnect
+  client.stop();
+  logStatus("Client disonnected");
 }
 
 void setupWiFi()
 {
-  Serial.println("Setup WiFi");
+  logStatus("Setup WiFi");
   WiFi.mode(WIFI_AP);
-
-  // Do a little work to get a unique-ish name. Append the
-  // last two bytes of the MAC (HEX'd) to "Thing-":
-  //uint8_t mac[WL_MAC_ADDR_LENGTH];
-  //WiFi.softAPmacAddress(mac);
-  //String macID = String(mac[WL_MAC_ADDR_LENGTH - 2], HEX) +
-  //               String(mac[WL_MAC_ADDR_LENGTH - 1], HEX);
-  //macID.toUpperCase();
-  String AP_NameString = "lights-on";
-
-  char AP_NameChar[AP_NameString.length() + 1];
-  memset(AP_NameChar, 0, AP_NameString.length() + 1);
-
-  for (int i=0; i<AP_NameString.length(); i++)
-    AP_NameChar[i] = AP_NameString.charAt(i);
-
-  WiFi.softAP(AP_NameChar, WiFiAPPSK);
+  WiFi.softAP(wifi_name, wifi_pass);
 }
 
 void initHardware()
