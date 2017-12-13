@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             public void onColorSelected(int selectedColor) {
                 say(Integer.toHexString(selectedColor));
                 say(getResources().getString(R.string.color_change));
+                setColorOfAll(selectedColor);
             }
         });
     }
@@ -66,20 +67,36 @@ public class MainActivity extends AppCompatActivity {
         class AllOnTask extends GetUrlContentTask {
             @Override
             protected void onPostExecute(String result) {
-                say(result);
+                if (result != null) {
+                    say(result);
+                }
             }
         }
         new AllOnTask().execute("http://192.168.4.1/all/on/");
     }
 
     protected void allOff() {
-        class AllOnTask extends GetUrlContentTask {
+        class AllOffTask extends GetUrlContentTask {
             @Override
             protected void onPostExecute(String result) {
-                say(result);
+                if (result != null) {
+                    say(result);
+                }
             }
         }
-        new AllOnTask().execute("http://192.168.4.1/all/off/");
+        new AllOffTask().execute("http://192.168.4.1/all/off/");
+    }
+
+    protected void setColorOfAll(Integer color) {
+        class SetColorOfAllTask extends GetUrlContentTask {
+            @Override
+            protected void onPostExecute(String result) {
+                if (result != null) {
+                    say(result);
+                }
+            }
+        }
+        new SetColorOfAllTask().execute("http://192.168.4.1/all/set/color/" + convertIntColorToHexColor(color));
     }
 
     protected void say(CharSequence msg) {
@@ -88,6 +105,13 @@ public class MainActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_SHORT;
         Toast toast = Toast.makeText(context, msg, duration);
         toast.show();
+    }
+
+    protected String convertIntColorToHexColor(Integer color) {
+        String colorStr = Integer.toHexString(color);
+        colorStr = colorStr.substring(2);
+        say(colorStr);
+        return colorStr;
     }
 
     private class GetUrlContentTask extends AsyncTask<String, Integer, String> {
@@ -121,9 +145,10 @@ public class MainActivity extends AppCompatActivity {
                 return content;
             } catch (Exception e) {
                 e.printStackTrace();
+                //say("Fehler");
             }
 
-            return "";
+            return null;
         }
 
         protected String doInBackground(String... urls) {
@@ -134,7 +159,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(String result) {
-            say(result);
+            if (result != null) {
+                say(result);
+            }
         }
     }
 }
